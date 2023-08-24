@@ -38,6 +38,14 @@ async function init() {
     //     });
     // })
 
+    server.listenMsg('MsgGameCore/Flap',call=>{
+        room.rooms.forEach(v=>{
+            if(v.conns.indexOf(call.conn as WsConnection)>=0){
+                v.broadcastMsg('MsgGameCore/Flap',call.msg);
+            }
+        })
+    })
+
     server.listenMsg('MsgGameCore/JoinRoom',call=>{
         room.rooms.get(call.msg.roomId)?.joinRoom(call.conn as WsConnection);
     })
