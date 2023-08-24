@@ -2,6 +2,15 @@ import * as path from "path";
 import { HttpServer, WsServer } from "tsrpc";
 import { serviceProto } from './shared/protocols/serviceProto';
 
+/**
+ * http的登陆，登陆后返回token
+ * 
+ * 分为 match 和 room
+ * match是短链接，当match的时候，检测当前所有的玩家，分配对手
+ * 
+ * 
+ * 
+ */
 // Create the Server
 export const server = new WsServer(serviceProto, {
     port: 3000,

@@ -1,31 +1,7 @@
-import { ServiceProto } from 'tsrpc-proto';
-import { MsgChat } from './MsgChat';
-import { MsgCreateRoom } from './MsgCreateRoom';
-import { MsgFlap } from './MsgGameCore/MsgFlap';
-import { MsgJoinRoom } from './MsgGameCore/MsgJoinRoom';
-import { ReqLogin, ResLogin } from './PtlLogin';
-import { ReqSend, ResSend } from './PtlSend';
-
-export interface ServiceType {
-    api: {
-        "Login": {
-            req: ReqLogin,
-            res: ResLogin
-        },
-        "Send": {
-            req: ReqSend,
-            res: ResSend
-        }
-    },
-    msg: {
-        "Chat": MsgChat,
-        "CreateRoom": MsgCreateRoom,
-        "MsgGameCore/Flap": MsgFlap,
-        "MsgGameCore/JoinRoom": MsgJoinRoom
-    }
-}
-
-export const serviceProto: ServiceProto<ServiceType> = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.serviceProto = void 0;
+exports.serviceProto = {
     "version": 2,
     "services": [
         {

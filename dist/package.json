@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "0.1.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "doc": "tsrpc-cli doc",
+    "test": "mocha test/**/*.test.ts",
+    "sync2": "node copyfile.js",
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^8.2.3",
+    "@types/node": "^15.14.9",
+    "mocha": "^9.2.2",
+    "onchange": "^7.1.0",
+    "ts-node": "^10.9.1",
+    "tsrpc-cli": "^2.4.5",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "tsrpc": "^3.4.12"
+  },
+  "description": "Dev server would restart automatically when code changed.",
+  "directories": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
+}
