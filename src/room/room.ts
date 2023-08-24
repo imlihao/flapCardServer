@@ -5,7 +5,7 @@ import { ServiceType } from "../shared/protocols/serviceProto";
 export class room {
     static rooms: Map<number, room> = new Map<number, room>();
 
-    createRoom(): room {
+    static createRoom(): room {
         return new room();
     }
 
@@ -14,22 +14,32 @@ export class room {
     }
 
     static id: number = 0;
+
+    readonly roomId:number;
     constructor() {
-        room.id++;
-        room.rooms.set(room.id, this);
+        this.roomId = ++room.id;
+        room.rooms.set(this.roomId , this);
     }
 
     joinRoom(con: WsConnection) {
-        this.broadcastMsg('MsgGameCore/JoinRoom',{
-            'user':'eeeee'
-        })
         this.conns.push(con);
+        if(this.conns.length>1){
+            this.conns.forEach((con,idx) => {
+                (con as WsConnection<ServiceType>).sendMsg('MsgGameCore/RoomPlayerEnough', {
+                    playerType:idx%2==0?"A":"B"
+                });
+            })
+        }
     }
 
-    broadcastMsg(msgName: string, msg: any) {
+    broadcastMsg<T extends keyof ServiceType['msg']>(msgName: T, msg: ServiceType['msg'][T]) {
         this.conns.forEach((con) => {
             con.sendMsg(msgName, msg);
         })
+    }
+
+    broadcastAllMsg<T extends keyof ServiceType['msg']>(msgName: T, msg: ServiceType['msg'][T]) {
+        return this.getCurServer().broadcastMsg(msgName, msg, this.conns);
     }
 
     conns: WsConnection[] = [];

@@ -3,6 +3,7 @@ import { MsgChat } from './MsgChat';
 import { MsgCreateRoom } from './MsgCreateRoom';
 import { MsgFlap } from './MsgGameCore/MsgFlap';
 import { MsgJoinRoom } from './MsgGameCore/MsgJoinRoom';
+import { MsgRoomPlayerEnough } from './MsgGameCore/MsgRoomPlayerEnough';
 import { ReqLogin, ResLogin } from './PtlLogin';
 import { ReqSend, ResSend } from './PtlSend';
 
@@ -21,12 +22,13 @@ export interface ServiceType {
         "Chat": MsgChat,
         "CreateRoom": MsgCreateRoom,
         "MsgGameCore/Flap": MsgFlap,
-        "MsgGameCore/JoinRoom": MsgJoinRoom
+        "MsgGameCore/JoinRoom": MsgJoinRoom,
+        "MsgGameCore/RoomPlayerEnough": MsgRoomPlayerEnough
     }
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 2,
+    "version": 4,
     "services": [
         {
             "id": 0,
@@ -46,6 +48,11 @@ export const serviceProto: ServiceProto<ServiceType> = {
         {
             "id": 5,
             "name": "MsgGameCore/JoinRoom",
+            "type": "msg"
+        },
+        {
+            "id": 6,
+            "name": "MsgGameCore/RoomPlayerEnough",
             "type": "msg"
         },
         {
@@ -87,6 +94,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Interface",
             "properties": [
                 {
+                    "id": 2,
+                    "name": "WhoDidThis",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
                     "id": 0,
                     "name": "cardIdx",
                     "type": {
@@ -106,10 +120,45 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "type": "Interface",
             "properties": [
                 {
-                    "id": 0,
-                    "name": "user",
+                    "id": 1,
+                    "name": "roomId",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "userName",
                     "type": {
                         "type": "String"
+                    }
+                }
+            ]
+        },
+        "MsgGameCore/MsgRoomPlayerEnough/MsgRoomPlayerEnough": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "playerType",
+                    "type": {
+                        "type": "Union",
+                        "members": [
+                            {
+                                "id": 0,
+                                "type": {
+                                    "type": "Literal",
+                                    "literal": "A"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "type": {
+                                    "type": "Literal",
+                                    "literal": "B"
+                                }
+                            }
+                        ]
                     }
                 }
             ]

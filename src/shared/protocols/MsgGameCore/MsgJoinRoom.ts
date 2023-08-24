@@ -1,4 +1,5 @@
 
 export interface MsgJoinRoom{
-    user:string
+    roomId:number,
+    userName:string
 }

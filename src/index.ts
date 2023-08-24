@@ -1,6 +1,7 @@
 import * as path from "path";
-import { HttpServer, WsServer } from "tsrpc";
+import { HttpServer, WsConnection, WsServer } from "tsrpc";
 import { serviceProto } from './shared/protocols/serviceProto';
+import { room } from "./room/room";
 
 /**
  * http的登陆，登陆后返回token
@@ -27,7 +28,19 @@ export const hServer = new HttpServer(serviceProto,{
 // Initialize before server start
 async function init() {
     await server.autoImplementApi(path.resolve(__dirname, 'api'));
+    
+    server.listenMsg('CreateRoom',call=>{
+        let rom = room.createRoom();
+        rom.conns.push(call.conn as WsConnection);
+        rom.broadcastMsg('MsgGameCore/JoinRoom',{
+            roomId:rom.roomId,
+            userName:"ershazi"
+        });
+    })
 
+    server.listenMsg('MsgGameCore/JoinRoom',call=>{
+        room.rooms.get(call.msg.roomId)?.joinRoom(call.conn as WsConnection);
+    })
     // TODO
     // Prepare something... (e.g. connect the db)
 };
