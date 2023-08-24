@@ -1,5 +1,5 @@
 import * as path from "path";
-import { WsServer } from "tsrpc";
+import { HttpServer, WsServer } from "tsrpc";
 import { serviceProto } from './shared/protocols/serviceProto';
 
 // Create the Server
@@ -8,6 +8,12 @@ export const server = new WsServer(serviceProto, {
     // Remove this to use binary mode (remove from the client too)
     json: true
 });
+
+export const hServer = new HttpServer(serviceProto,{
+    port: 3001,
+    // Remove this to use binary mode (remove from the client too)
+    json: true
+})
 
 // Initialize before server start
 async function init() {
@@ -21,5 +27,6 @@ async function init() {
 async function main() {
     await init();
     await server.start();
+    await hServer.start();
 }
 main();
