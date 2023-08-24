@@ -28,15 +28,15 @@ export const hServer = new HttpServer(serviceProto,{
 // Initialize before server start
 async function init() {
     await server.autoImplementApi(path.resolve(__dirname, 'api'));
-    
-    server.listenMsg('CreateRoom',call=>{
-        let rom = room.createRoom();
-        rom.conns.push(call.conn as WsConnection);
-        rom.broadcastMsg('MsgGameCore/JoinRoom',{
-            roomId:rom.roomId,
-            userName:"ershazi"
-        });
-    })
+
+    // server.listenMsg('CreateRoom',call=>{
+    //     let rom = room.createRoom();
+    //     rom.conns.push(call.conn as WsConnection);
+    //     rom.broadcastMsg('MsgGameCore/JoinRoom',{
+    //         roomId:rom.roomId,
+    //         userName:"ershazi"
+    //     });
+    // })
 
     server.listenMsg('MsgGameCore/JoinRoom',call=>{
         room.rooms.get(call.msg.roomId)?.joinRoom(call.conn as WsConnection);

@@ -4,11 +4,16 @@ import { MsgCreateRoom } from './MsgCreateRoom';
 import { MsgFlap } from './MsgGameCore/MsgFlap';
 import { MsgJoinRoom } from './MsgGameCore/MsgJoinRoom';
 import { MsgRoomPlayerEnough } from './MsgGameCore/MsgRoomPlayerEnough';
+import { ReqCreateOneRoom, ResCreateOneRoom } from './PtlCreateOneRoom';
 import { ReqLogin, ResLogin } from './PtlLogin';
 import { ReqSend, ResSend } from './PtlSend';
 
 export interface ServiceType {
     api: {
+        "CreateOneRoom": {
+            req: ReqCreateOneRoom,
+            res: ResCreateOneRoom
+        },
         "Login": {
             req: ReqLogin,
             res: ResLogin
@@ -54,6 +59,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "id": 6,
             "name": "MsgGameCore/RoomPlayerEnough",
             "type": "msg"
+        },
+        {
+            "id": 7,
+            "name": "CreateOneRoom",
+            "type": "api",
+            "conf": {}
         },
         {
             "id": 2,
@@ -163,6 +174,45 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
+        "PtlCreateOneRoom/ReqCreateOneRoom": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseRequest"
+                    }
+                }
+            ]
+        },
+        "base/BaseRequest": {
+            "type": "Interface"
+        },
+        "PtlCreateOneRoom/ResCreateOneRoom": {
+            "type": "Interface",
+            "extends": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "base/BaseResponse"
+                    }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "roomId",
+                    "type": {
+                        "type": "Number"
+                    }
+                }
+            ]
+        },
+        "base/BaseResponse": {
+            "type": "Interface"
+        },
         "PtlLogin/ReqLogin": {
             "type": "Interface",
             "extends": [
@@ -190,9 +240,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 }
             ]
-        },
-        "base/BaseRequest": {
-            "type": "Interface"
         },
         "PtlLogin/ResLogin": {
             "type": "Interface",
@@ -230,9 +277,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 }
             ]
-        },
-        "base/BaseResponse": {
-            "type": "Interface"
         },
         "PtlSend/ReqSend": {
             "type": "Interface",
